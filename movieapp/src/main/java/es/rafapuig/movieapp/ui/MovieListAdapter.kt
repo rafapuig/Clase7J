@@ -2,16 +2,22 @@ package es.rafapuig.movieapp.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import es.rafapuig.movieapp.R
 import es.rafapuig.movieapp.data.network.model.Movie
 import es.rafapuig.movieapp.databinding.ViewMovieItemBinding
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieListAdapter(val onItemClick : (Movie) -> Unit) : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
 
-    class MovieViewHolder(private val binding: ViewMovieItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MovieViewHolder(
+        private val binding: ViewMovieItemBinding,
+        val onItemClick : (Movie) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         private val imageBaseUrl = "https://image.tmdb.org/t/p/w185/"
 
@@ -24,29 +30,33 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                 .fitCenter()
                 .into(binding.moviePoster)
 
+            itemView.setOnClickListener { onItemClick(movie) }
         }
 
     }
 
-    private val movies = mutableListOf<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ViewMovieItemBinding.inflate(layoutInflater)
-        return MovieViewHolder(binding)
+        return  MovieViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(movies[position])
+        holder.bind(currentList[position])
     }
 
-    override fun getItemCount(): Int {
-        return movies.size
+    companion object {
+
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
+
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie) = oldItem == newItem
+
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie) = oldItem.id == newItem.id
+
+        }
+
     }
 
-    fun addMovies(movieList: List<Movie>) {
-        movies.addAll(movieList)
-        notifyItemRangeInserted(0,movieList.size)
-    }
 
 }

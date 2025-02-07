@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import es.rafapuig.movieapp.R
+import com.google.android.material.snackbar.Snackbar
+import es.rafapuig.movieapp.data.network.model.Movie
 import es.rafapuig.movieapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +17,13 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MovieViewModel by viewModels { MovieViewModel.Factory }
 
-    private val movieAdapter by lazy { MovieAdapter() }
+    private val movieAdapter by lazy { MovieListAdapter { movie -> onMovieClick(movie) } }
+
+    private fun onMovieClick(movie: Movie) {
+        Snackbar
+            .make(binding.root, "Has hecho click ... en ${movie.title}", Snackbar.LENGTH_SHORT)
+            .show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.movies.observe(this) { movies ->
-            movieAdapter.addMovies(movies)
+            movieAdapter.submitList(movies)
         }
 
     }

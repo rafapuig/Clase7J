@@ -41,7 +41,6 @@ android {
 
 dependencies {
 
-    implementation(libs.appcompat.v7)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
