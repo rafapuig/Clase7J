@@ -3,9 +3,10 @@ package es.rafapuig.movieapp
 import android.app.Application
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import es.rafapuig.movieapp.data.MovieRepository
+import es.rafapuig.movieapp.data.MovieRepositoryImpl
 import es.rafapuig.movieapp.data.network.RequestTokenInterceptor
 import es.rafapuig.movieapp.data.network.api.MovieService
+import es.rafapuig.movieapp.domain.MovieRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -40,7 +41,7 @@ class MovieApplication : Application() {
         super.onCreate()
         val service = getMovieService(API_TOKEN)
 
-        movieRepository = MovieRepository(service)
+        movieRepository = MovieRepositoryImpl(service)
     }
 
 }

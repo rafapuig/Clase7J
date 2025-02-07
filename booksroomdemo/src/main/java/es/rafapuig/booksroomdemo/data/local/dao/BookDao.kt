@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 import es.rafapuig.booksroomdemo.data.local.entities.BookEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -15,19 +16,19 @@ interface BookDao {
     suspend fun getAll(): List<BookEntity>
 
     @Query("SELECT * FROM books")
-    suspend fun getAllObservable() : Flow<List<BookEntity>>
-
+    fun getAllObservable() : Flow<List<BookEntity>>
 
     @Query("SELECT * FROM books WHERE id = :bookId")
-    suspend fun getBookByIdCore(bookId: Long): Flow<BookEntity>
+    fun getBookByIdCore(bookId: Long): Flow<BookEntity>
 
     suspend fun getBookById(bookId: Long) = getBookByIdCore(bookId).distinctUntilChanged()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(books: List<BookEntity>)
 
-    @Query("DROP TABLE books")
-    suspend fun clear()
+    @Query("DELETE FROM books")
+    suspend fun clearAll()
 
-
+    @Upsert
+    suspend fun upsertAll(books: List<BookEntity>)
 }

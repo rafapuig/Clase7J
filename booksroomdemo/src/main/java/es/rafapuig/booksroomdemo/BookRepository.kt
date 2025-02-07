@@ -15,7 +15,7 @@ class BookRepository(
 
         try {
             val books = bookService.getAllBooks()
-            bookDao.clear()
+            bookDao.clearAll()
             bookDao.insertAll( books.map { it.toDatabase() })
 
         } catch (ex : Exception) {

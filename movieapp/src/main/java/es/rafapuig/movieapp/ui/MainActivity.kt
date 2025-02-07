@@ -8,8 +8,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
-import es.rafapuig.movieapp.data.network.model.Movie
 import es.rafapuig.movieapp.databinding.ActivityMainBinding
+import es.rafapuig.movieapp.domain.model.Movie
 
 class MainActivity : AppCompatActivity() {
 

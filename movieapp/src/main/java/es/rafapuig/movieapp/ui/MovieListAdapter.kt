@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import es.rafapuig.movieapp.R
-import es.rafapuig.movieapp.data.network.model.Movie
 import es.rafapuig.movieapp.databinding.ViewMovieItemBinding
+import es.rafapuig.movieapp.domain.model.Movie
 
 class MovieListAdapter(val onItemClick : (Movie) -> Unit) : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
